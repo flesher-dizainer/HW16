@@ -77,17 +77,21 @@ class ArchiveManager:
 
     def extract(self, archive_path: str, destination: str = None) -> None:
         """
-        Извлекает содержимое архива.
 
-        Args:
-            archive_path: Путь к архиву.
-            destination: Путь к папке, куда извлечь содержимое.
+        :param archive_path:
+        :param destination:
+        :return:
+
+        :raises:
+            FileNotFoundError: Если архив не найден
+            ValueError: Если формат архива не поддерживается
         """
         archive_path = archive_path.strip('"')  # убираем из пути первые и последние кавычки
         extension = os.path.splitext(archive_path)[1].lower()  # получаем расширение
         if destination is None:
             destination = os.path.splitext(archive_path)[0]
         if extension in self.archive_classes:
+            os.makedirs(destination, exist_ok=True)
             archive_class = self.archive_classes[extension]
             archive = archive_class()
             try:
